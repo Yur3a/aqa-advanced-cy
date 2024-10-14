@@ -23,3 +23,23 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// cypress/support/commands.js
+
+Cypress.Commands.add('createExpense', (sid) => {
+    cy.request({
+        method: 'POST',
+        url: 'https://qauto.forstudy.space/api/expenses',
+        headers: {
+            Cookie: `sid=${sid}`
+        },
+        body: {
+            car_Brand_Id: carBrandId,
+            car_Model_Id: carModelId,
+            mileage: mileage
+        }
+    }).then((response) => {
+        expect(response.status).to.equal(201);
+        cy.wrap(response.body).as('createExpenseResponse');
+    });
+});
